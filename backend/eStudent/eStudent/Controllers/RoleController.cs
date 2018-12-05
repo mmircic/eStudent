@@ -1,33 +1,35 @@
-﻿using eStudent.DTO;
+﻿using AutoMapper;
+using eStudent.DTO;
 using eStudent.DTO.Role;
 using eStudent.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace eStudent.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
-    public class RolesController : ControllerBase
+    public class RoleController : ControllerBase
     {
         private readonly DatabaseContext _context;
+        private readonly IMapper _mapper;
 
-        public RolesController(DatabaseContext context)
+        public RoleController(DatabaseContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        // GET: api/Roles
-        [HttpGet]
+
+        [HttpGet("all")]
         public IEnumerable<Role> GetRoles()
         {
             return _context.Roles;
         }
 
-        // GET: api/Roles/5
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetRole(int id)
         {
@@ -41,40 +43,34 @@ namespace eStudent.Controllers
             return Ok(role);
         }
 
-        // PUT: api/Roles/5
+
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRole(int id, [FromBody] RoleUpdateDto role)
         {
-            Role entity = await _context.Roles.FindAsync(id);
-            if (entity == null)
-            {
-                return BadRequest();
-            }
+            Role entity = _mapper.Map<RoleUpdateDto, Role>(role);
+            entity.Id = id;
 
-            entity.Name = role.Name;
-
-            _context.Entry(entity).State = EntityState.Modified;
+            _context.Roles.Update(entity);
 
             await _context.SaveChangesAsync();
 
             return Ok(entity);
         }
 
-        // POST: api/Roles
+
         [HttpPost]
         public async Task<IActionResult> PostRole([FromBody] RoleCreateDto role)
         {
-            Role entity = new Role()
-            {
-                Name = role.Name
-            };
+            Role entity = _mapper.Map<RoleCreateDto, Role>(role);
+
             _context.Roles.Add(entity);
+
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetRole", new { id = entity.Id }, entity);
         }
 
-        // DELETE: api/Roles/5
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRole(int id)
         {

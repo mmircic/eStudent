@@ -1,6 +1,7 @@
 ﻿using eStudent.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -11,24 +12,24 @@ using System.Text;
 
 namespace eStudent.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     [AllowAnonymous]
-    public class LoginController : ControllerBase
+    public class AuthController : ControllerBase
     {
         private IConfiguration _config;
         private DatabaseContext _context;
 
-        public LoginController(IConfiguration config, DatabaseContext context)
+        public AuthController(IConfiguration config, DatabaseContext context)
         {
             _config = config;
             _context = context;
         }
         [HttpPost]
-        public IActionResult Login([FromBody] Login login)
+        public IActionResult Auth([FromBody] Auth auth)
         {
             IActionResult response = Unauthorized();
-            var user = AuthenticateUser(login);
+            var user = AuthenticateUser(auth);
 
             if (user != null)
             {
@@ -46,10 +47,15 @@ namespace eStudent.Controllers
 
             var claims = new[]
             {
-                new Claim("Email", user.Email),
+                new Claim("Id", user.Id.ToString()),
+                new Claim("OIB", user.OIB),
                 new Claim("FirstName", user.FirstName),
                 new Claim("LastName", user.LastName),
-                new Claim("Id", user.Id.ToString())
+                new Claim("BirthDate", user.BirthDate.ToString()),
+                new Claim("Residence", user.Residence),
+                new Claim("Email", user.Email),
+                new Claim("Role", user.Role.Name)
+
             };
 
             var token = new JwtSecurityToken(
@@ -65,11 +71,11 @@ namespace eStudent.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        private User AuthenticateUser(Login login)
+        private User AuthenticateUser(Auth auth)
         {
             User user = null;
 
-            user = _context.Users.FirstOrDefault(u => u.Email == login.Email && u.Password == login.Password);
+            user = _context.Users.Include(u => u.Role).FirstOrDefault(u => u.Email == auth.Email && u.Password == auth.Password);
 
             return user;
         }

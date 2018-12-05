@@ -1,33 +1,38 @@
-﻿using eStudent.DTO;
+﻿using AutoMapper;
+using eStudent.DTO;
 using eStudent.DTO.User;
 using eStudent.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace eStudent.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly DatabaseContext _context;
+        private readonly IMapper _mapper;
 
-        public UsersController(DatabaseContext context)
+        public UserController(DatabaseContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        // GET: api/Users
-        [HttpGet]
+
+        [HttpGet("all")]
         public IEnumerable<User> GetUsers()
         {
-            return _context.Users;
+            var users = _context.Users;
+            return users;
         }
 
-        // GET: api/Users/5
+
+
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(int id)
         {
@@ -41,59 +46,36 @@ namespace eStudent.Controllers
             return Ok(user);
         }
 
-        // PUT: api/Users/5
+
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, [FromBody] UserUpdateDto user)
         {
 
-            User entity = await _context.Users.FindAsync(id);
+            User entity = _mapper.Map<UserUpdateDto, User>(user);
+            entity.Id = id;
 
-            if (entity == null)
-            {
-                return NotFound();
-            }
-
-            entity.OIB = user.OIB;
-            entity.FirstName = user.FirstName;
-            entity.LastName = user.LastName;
-            entity.Residence = user.Residence;
-            entity.Password = user.Password;
-            entity.Email = user.Email;
-            entity.BirthDate = user.BirthDate.Value;
-
-            _context.Entry(entity).State = EntityState.Modified;
+            _context.Users.Update(entity);
 
             await _context.SaveChangesAsync();
 
             return Ok(entity);
         }
 
-        // POST: api/Users
+
         [HttpPost]
         public async Task<IActionResult> PostUser([FromBody] UserCreateDto user)
         {
-            User entity = new User()
-            {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                BirthDate = user.BirthDate.Value,
-                OIB = user.OIB,
-                Residence = user.Residence,
-                Password = user.Password,
-                RoleId = 2
-            };
+            User entity = _mapper.Map<UserCreateDto, User>(user);
+            entity.RoleId = 6;
 
             _context.Users.Add(entity);
+
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new
-            {
-                id = entity.Id
-            }, entity);
+            return CreatedAtAction("GetUser", new { id = entity.Id }, entity);
         }
 
-        // DELETE: api/Users/5
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {

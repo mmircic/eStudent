@@ -3,5 +3,6 @@
   <mat-icon class="title-icon">school</mat-icon> &nbsp;&nbsp;
   <span class="navbar-title">e-Student</span>
   <span class="example-fill-remaining-space"></span>
-  <span>Prijava</span>
+  <!-- <span *ngIf="!auth.isLoggedIn()">Prijava</span> -->
+  <span *ngIf="auth.isLoggedIn()" (click)="auth.logout()">Odjava</span> 
 </mat-toolbar>

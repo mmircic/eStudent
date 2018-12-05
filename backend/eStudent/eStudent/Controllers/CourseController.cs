@@ -1,33 +1,36 @@
-﻿using eStudent.DTO;
+﻿using AutoMapper;
+using eStudent.DTO;
 using eStudent.DTO.Course;
 using eStudent.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace eStudent.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
-    public class CoursesController : ControllerBase
+    public class CourseController : ControllerBase
     {
         private readonly DatabaseContext _context;
+        private readonly IMapper _mapper;
 
-        public CoursesController(DatabaseContext context)
+        public CourseController(DatabaseContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        // GET: api/Courses
-        [HttpGet]
+
+        [HttpGet("all")]
         public IEnumerable<Course> GetCourses()
         {
-            return _context.Courses;
+            var courses = _context.Courses.ToList();
+            return courses;
         }
 
-        // GET: api/Courses/5
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCourse(int id)
         {
@@ -41,40 +44,36 @@ namespace eStudent.Controllers
             return Ok(course);
         }
 
-        // PUT: api/Courses/5
+
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCourse(int id, [FromBody] CourseUpdateDto course)
         {
-            Course entity = await _context.Courses.FindAsync(id);
-            if (entity == null)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(entity).State = EntityState.Modified;
+
+            Course entity = _mapper.Map<CourseUpdateDto, Course>(course);
+            entity.Id = id;
+
+
+            _context.Courses.Update(entity);
 
             await _context.SaveChangesAsync();
 
             return Ok(entity);
         }
 
-        // POST: api/Courses
+
         [HttpPost]
         public async Task<IActionResult> PostCourse([FromBody] CourseCreateDto course)
         {
-            Course entity = new Course()
-            {
-                Name = course.Name,
-                CourseTypeId = course.CourseTypeId.Value
-            };
+            Course entity = _mapper.Map<CourseCreateDto, Course>(course);
 
             _context.Courses.Add(entity);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCourse", new { id = entity.Id }, entity);
+            return CreatedAtAction(nameof(GetCourse), new { id = entity.Id }, entity);
         }
 
-        // DELETE: api/Courses/5
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourse(int id)
         {

@@ -1,34 +1,35 @@
-﻿using eStudent.DTO;
+﻿using AutoMapper;
+using eStudent.DTO;
 using eStudent.DTO.Request;
 using eStudent.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace eStudent.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
-    public class RequestsController : ControllerBase
+    public class RequestController : ControllerBase
     {
         private readonly DatabaseContext _context;
+        private readonly IMapper _mapper;
 
-        public RequestsController(DatabaseContext context)
+        public RequestController(DatabaseContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        // GET: api/Requests
-        [HttpGet]
+
+        [HttpGet("all")]
         public IEnumerable<Request> GetRequests()
         {
             return _context.Requests;
         }
 
-        // GET: api/Requests/5
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetRequest(int id)
         {
@@ -42,43 +43,27 @@ namespace eStudent.Controllers
             return Ok(request);
         }
 
-        // PUT: api/Requests/5
+
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRequest(int id, [FromBody] RequestUpdateDto request)
         {
-            Request entity = await _context.Requests.FindAsync(id);
+            Request entity = _mapper.Map<RequestUpdateDto, Request>(request);
+            entity.Id = id;
 
-            if (entity == null)
-            {
-                return BadRequest();
-            }
-
-            entity.CourseId = request.CourseId.Value;
-            entity.YearOfStudy = request.YearOfStudy.Value;
-
-            _context.Entry(entity).State = EntityState.Modified;
+            _context.Requests.Update(entity);
 
             await _context.SaveChangesAsync();
 
             return Ok(entity);
         }
 
-        // POST: api/Requests
+
         [HttpPost]
         public async Task<IActionResult> PostRequest([FromBody] RequestCreateDto request)
         {
-            Request entity = new Request()
-            {
 
-                Accepted = false,
-                CourseId = request.CourseId.Value,
-                Date = DateTime.Now,
-                //Authenticated user
-                UserId = request.UserId.Value,
-                YearOfStudy = request.YearOfStudy.Value
-
-            };
-
+            Request entity = _mapper.Map<RequestCreateDto, Request>(request);
+            entity.Accepted = false;
 
             _context.Requests.Add(entity);
             await _context.SaveChangesAsync();
@@ -89,7 +74,7 @@ namespace eStudent.Controllers
             }, entity);
         }
 
-        // DELETE: api/Requests/5
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRequest(int id)
         {

@@ -2,7 +2,7 @@
 
 namespace eStudent.Models
 {
-    public class Login
+    public class Auth
     {
         [Required]
         [EmailAddress]

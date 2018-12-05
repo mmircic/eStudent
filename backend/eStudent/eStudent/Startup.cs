@@ -1,4 +1,5 @@
-﻿using eStudent;
+﻿using AutoMapper;
+using eStudent;
 using eStudent.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -33,10 +34,21 @@ namespace e_Student
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("EnableCORS", builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials().Build();
+                });
+            });
+
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(ValidateModelFilter));
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
@@ -55,7 +67,6 @@ namespace e_Student
 
 
 
-            // services.AddDbContext<DatabaseContext>(opt => opt.UseNpgsql(Configuration["database:connection"]));
 
             services.AddEntityFrameworkNpgsql().AddDbContext<DatabaseContext>(options =>
             {
@@ -93,27 +104,9 @@ namespace e_Student
             }
 
             app.UseHttpsRedirection();
-            app.UseMvc(
-            //    routes =>
-            //    {
-            //        routes.MapRoute(
-            //        name: "default",
-            //        template: "{controller}/{action=Index}/{id?}");
-            //    });
 
-            //app.UseSpa(spa =>
-            //{
-            //    // To learn more about options for serving an Angular SPA from ASP.NET Core,
-            //    // see https://go.microsoft.com/fwlink/?linkid=864501
-
-            //    spa.Options.SourcePath = "ClientApp";
-
-            //    if (env.IsDevelopment())
-            //    {
-            //        spa.UseAngularCliServer(npmScript: "start");
-            //    }
-            //}
-                            );
+            app.UseCors("EnableCORS");
+            app.UseMvc();
             app.UseAuthentication();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
