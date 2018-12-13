@@ -7,7 +7,7 @@
         matInput placeholder="Email">
     </mat-form-field>
     <div *ngIf="submitted && formData.email.errors" class="invalid-feedback">
-      <div *ngIf="formData.email.errors.required">Email is required</div>
+      <div *ngIf="formData.email.errors.required">Unos Email adrese je obavezan</div>
       <div *ngIf="formData.email.errors.email">Netočan format E-mail adrese</div>
     </div>
 
@@ -17,7 +17,7 @@
       <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
     </mat-form-field>
     <div *ngIf="submitted && formData.password.errors" class="invalid-feedback">
-      <div *ngIf="formData.password.errors.required">Password is required</div>
+      <div *ngIf="formData.password.errors.required">Unos lozinke je obavezan</div>
     </div>
     <button type="submit" mat-raised-button color="primary">Prijava</button>
   </div>

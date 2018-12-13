@@ -1,12 +1,12 @@
-import { Role } from "./role.model";
 
-export class User {
-    Id: number;
-    OIB: string;
-    FirstName: string;
-    LastName: string;
-    BirthDate: Date;
-    Residence: string;
-    Email: string;
-    Role: string;
+export interface User {
+    id: number;
+    oib: string;
+    firstName: string;
+    lastName: string;
+    birthDate: string;
+    residence: string;
+    email: string;
+    password: string;
+    role: string;
 }

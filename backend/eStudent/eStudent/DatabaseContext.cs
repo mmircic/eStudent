@@ -1,10 +1,12 @@
 ﻿using eStudent.EntityConfig;
 using eStudent.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace eStudent
 {
-    public class DatabaseContext : DbContext
+    public class DatabaseContext : IdentityDbContext<User, Role, int, IdentityUserClaim<int>, UserRole, IdentityUserLogin<int>, IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
@@ -15,11 +17,15 @@ namespace eStudent
         {
             base.OnModelCreating(modelBuilder);
 
+            
+
+
             modelBuilder.ApplyConfiguration(new UserConfig());
             modelBuilder.ApplyConfiguration(new SubjectConfig());
             modelBuilder.ApplyConfiguration(new RoleConfig());
             modelBuilder.ApplyConfiguration(new CourseConfig());
             modelBuilder.ApplyConfiguration(new CourseTypeConfig());
+            modelBuilder.ApplyConfiguration(new UserRoleConfig());
 
         }
 

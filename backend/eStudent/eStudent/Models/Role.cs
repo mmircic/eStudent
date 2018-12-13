@@ -1,11 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿
+using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 
 namespace eStudent.Models
 {
-    public class Role
+    public class Role : IdentityRole<int>
     {
-        public int Id { get; set; }
-        [Required]
-        public string Name { get; set; }
+        public ICollection<UserRole> Roles { get; set; }
     }
 }

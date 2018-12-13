@@ -1,5 +1,6 @@
 ﻿using eStudent.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -19,20 +20,26 @@ namespace eStudent.Controllers
     {
         private IConfiguration _config;
         private DatabaseContext _context;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
 
-        public AuthController(IConfiguration config, DatabaseContext context)
+        public AuthController(IConfiguration config, DatabaseContext context, UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _config = config;
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
         [HttpPost]
-        public IActionResult Auth([FromBody] Auth auth)
+        public async System.Threading.Tasks.Task<IActionResult> AuthAsync([FromBody] Auth auth)
         {
             IActionResult response = Unauthorized();
-            var user = AuthenticateUser(auth);
+            //var user = AuthenticateUser(auth);
+            var singInResult = await _signInManager.PasswordSignInAsync(auth.Email, auth.Password, isPersistent: true, lockoutOnFailure: false);
 
-            if (user != null)
+            if (singInResult.Succeeded)
             {
+                var user = await _userManager.Users.Include(p => p.Roles).ThenInclude(p => p.Role).FirstOrDefaultAsync(p => p.Email == auth.Email);
                 var tokenString = GenerateJSONWebToken(user);
                 response = Ok(new { token = tokenString });
             }
@@ -47,14 +54,14 @@ namespace eStudent.Controllers
 
             var claims = new[]
             {
-                new Claim("Id", user.Id.ToString()),
-                new Claim("OIB", user.OIB),
-                new Claim("FirstName", user.FirstName),
-                new Claim("LastName", user.LastName),
-                new Claim("BirthDate", user.BirthDate.ToString()),
-                new Claim("Residence", user.Residence),
-                new Claim("Email", user.Email),
-                new Claim("Role", user.Role.Name)
+                new Claim("id", user.Id.ToString()),
+                new Claim("oib", user.OIB),
+                new Claim("firstName", user.FirstName),
+                new Claim("lastName", user.LastName),
+                new Claim("birthDate", user.BirthDate.ToString()),
+                new Claim("residence", user.Residence),
+                new Claim("email", user.Email),
+                new Claim("role", user.Roles.First().Role.Name)
 
             };
 
@@ -75,7 +82,7 @@ namespace eStudent.Controllers
         {
             User user = null;
 
-            user = _context.Users.Include(u => u.Role).FirstOrDefault(u => u.Email == auth.Email && u.Password == auth.Password);
+            user = _context.Users.Include(u => u.Roles).FirstOrDefault(u => u.Email == auth.Email && u.PasswordHash == auth.Password);
 
             return user;
         }

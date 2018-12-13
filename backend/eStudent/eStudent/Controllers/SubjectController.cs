@@ -45,7 +45,7 @@ namespace eStudent.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSubject(int id, [FromBody] SubjectUpdateDto subject)
+        public async Task<IActionResult> UpdateSubject(int id, [FromBody] SubjectUpdateDto subject)
         {
             Subject entity = _mapper.Map<SubjectUpdateDto, Subject>(subject);
             entity.Id = id;
@@ -59,7 +59,7 @@ namespace eStudent.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> PostSubject([FromBody] SubjectCreateDto subject)
+        public async Task<IActionResult> CreateSubject([FromBody] SubjectCreateDto subject)
         {
             Subject entity = _mapper.Map<SubjectCreateDto, Subject>(subject);
 

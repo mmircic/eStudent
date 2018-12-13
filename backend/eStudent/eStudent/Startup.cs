@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using eStudent;
 using eStudent.Filters;
+using eStudent.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -47,7 +49,12 @@ namespace e_Student
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(ValidateModelFilter));
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            }).
+            AddJsonOptions(options =>
+            {
+                options.SerializerSettings.DateFormatString = "yyyy-MM-dd";
+            })
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -72,6 +79,15 @@ namespace e_Student
             {
                 options.UseNpgsql(Configuration["database:connection"]);
                 options.UseLoggerFactory(LocalQueryLoggerFactory);
+            });
+
+            services.AddIdentity<User, Role>()
+                .AddEntityFrameworkStores<DatabaseContext>()
+                .AddDefaultTokenProviders();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
             });
 
             services.AddSwaggerGen(c =>

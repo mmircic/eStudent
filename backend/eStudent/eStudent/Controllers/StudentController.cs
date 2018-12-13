@@ -9,9 +9,10 @@ using System.Linq;
 namespace eStudent.Controllers
 {
     [Route("api/v1/[controller]")]
-    [ApiController]
+    //[ApiController]
     public class StudentController : ControllerBase
     {
+        private const string STUDENT_ROLE = "Student";
         private readonly DatabaseContext _context;
         private readonly IMapper _mapper;
         public StudentController(DatabaseContext context, IMapper mapper)
@@ -23,7 +24,9 @@ namespace eStudent.Controllers
         [HttpGet("all")]
         public IEnumerable<StudentGetDto> GetStudents()
         {
-            var users = _context.Users.Include(u => u.Role).Where(u => u.Role.Name == "Student").ToList();
+            Role studentRole = _context.Roles.Where(r => r.Name == STUDENT_ROLE).FirstOrDefault();
+            //var users = _context.Users.Include(u => u.Roles).Where(u => u.Roles.Contains()).ToList();
+            var users = _context.Users.Include(u => u.Roles).Where(u => u.Roles.Select(r => r.RoleId).Contains(studentRole.Id)).ToList();
             var students = this._mapper.Map<IEnumerable<User>, IEnumerable<StudentGetDto>>(users);
 
             return students;

@@ -45,7 +45,7 @@ namespace eStudent.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRequest(int id, [FromBody] RequestUpdateDto request)
+        public async Task<IActionResult> UpdateRequest(int id, [FromBody] RequestUpdateDto request)
         {
             Request entity = _mapper.Map<RequestUpdateDto, Request>(request);
             entity.Id = id;
@@ -59,7 +59,7 @@ namespace eStudent.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> PostRequest([FromBody] RequestCreateDto request)
+        public async Task<IActionResult> CreateRequest([FromBody] RequestCreateDto request)
         {
 
             Request entity = _mapper.Map<RequestCreateDto, Request>(request);

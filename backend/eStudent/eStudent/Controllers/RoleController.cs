@@ -45,7 +45,7 @@ namespace eStudent.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRole(int id, [FromBody] RoleUpdateDto role)
+        public async Task<IActionResult> UpdateRole(int id, [FromBody] RoleUpdateDto role)
         {
             Role entity = _mapper.Map<RoleUpdateDto, Role>(role);
             entity.Id = id;
@@ -59,7 +59,7 @@ namespace eStudent.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> PostRole([FromBody] RoleCreateDto role)
+        public async Task<IActionResult> CreateRole([FromBody] RoleCreateDto role)
         {
             Role entity = _mapper.Map<RoleCreateDto, Role>(role);
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthenticationService } from 'src/app/services/authentication.service';
+import { AuthenticationService, TOKEN_NAME } from 'src/app/services/authentication.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs/operators';
 
@@ -26,14 +26,15 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     if (this.auth.isLoggedIn()) {
-      this.router.navigate(['/student']);
+      this.router.navigate(['/student-list']);
     }
+    localStorage.removeItem(TOKEN_NAME);
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.compose([Validators.required, Validators.email])],
       password: ['', Validators.required]
     });
 
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/student';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/student-list';
   }
 
   get formData() { return this.loginForm.controls}

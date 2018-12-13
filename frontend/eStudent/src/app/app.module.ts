@@ -6,7 +6,8 @@ import {MatToolbarModule, MatIconModule, MatFormFieldModule,
    MatOptionModule, MatSelectModule, MatInputModule, 
    MatGridListModule, MatButtonModule, MatPaginatorModule, 
    MatTableModule,
-   MatSortModule} from '@angular/material';
+   MatSortModule,
+   MatDialogModule} from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,6 +22,7 @@ import { AuthenticationService } from './services/authentication.service';
 import { StudentListComponent } from './components/student-list/student-list.component';
 import { UserService } from './services/user.service';
 import { RequestListComponent } from './components/request-list/request-list.component';
+import { StudentEditorComponent } from './components/student-editor/student-editor.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,8 @@ import { RequestListComponent } from './components/request-list/request-list.com
     NavbarComponent,
     LoginComponent,
     StudentListComponent,
-    RequestListComponent
+    RequestListComponent,
+    StudentEditorComponent
   ],
   imports: [
     BrowserModule,
@@ -46,17 +49,13 @@ import { RequestListComponent } from './components/request-list/request-list.com
     MatPaginatorModule,
     MatTableModule,
     MatSortModule,
+    MatDialogModule,
     ReactiveFormsModule,
-    FormsModule,
-    RouterModule.forRoot([
-      {path: 'student', component: StudentListComponent, pathMatch: 'full', canActivate: [AuthorizationCheck]},
-      {path: 'request', component: RequestListComponent, pathMatch: 'full', canActivate: [AuthorizationCheck]},
-      {path: '', component: LoginComponent}
-    ])
+    FormsModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: httpInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    //{provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     AuthorizationCheck,
     AuthenticationService,
     UserService

@@ -46,7 +46,7 @@ namespace eStudent.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCourse(int id, [FromBody] CourseUpdateDto course)
+        public async Task<IActionResult> UpdateCourse(int id, [FromBody] CourseUpdateDto course)
         {
 
 
@@ -63,7 +63,7 @@ namespace eStudent.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> PostCourse([FromBody] CourseCreateDto course)
+        public async Task<IActionResult> CreateCourse([FromBody] CourseCreateDto course)
         {
             Course entity = _mapper.Map<CourseCreateDto, Course>(course);
 

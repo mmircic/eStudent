@@ -9,6 +9,10 @@ namespace eStudent.EntityConfig
         public void Configure(EntityTypeBuilder<Role> builder)
         {
             builder.HasIndex(r => r.Name).IsUnique();
+
+            builder.HasMany(e => e.Roles)
+                .WithOne()
+                .HasForeignKey(e => e.RoleId);
         }
     }
 }

@@ -7,6 +7,7 @@ using eStudent.DTO.Role;
 using eStudent.DTO.Subject;
 using eStudent.DTO.User;
 using eStudent.Models;
+using System.Linq;
 
 namespace eStudent
 {
@@ -31,6 +32,9 @@ namespace eStudent
 
             CreateMap<CourseCreateDto, Course>();
             CreateMap<CourseUpdateDto, Course>();
+
+            CreateMap<User, StudentGetDto>()
+                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Roles.FirstOrDefault().Role));
         }
     }
 }

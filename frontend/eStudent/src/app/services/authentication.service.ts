@@ -14,11 +14,11 @@ export const TOKEN_NAME = environment.tokenName;
 export class AuthenticationService {
 
   API_BASE_URL = environment.baseUri;
-  user: User;
+  authenticatedUser: User;
 
   constructor(private http: HttpClient, private router: Router) {
     if (this.isLoggedIn()) {
-      this.user = jwt_decode(localStorage.getItem(TOKEN_NAME));
+      this.authenticatedUser = jwt_decode(localStorage.getItem(TOKEN_NAME));
     } 
     
   } 
@@ -32,7 +32,7 @@ export class AuthenticationService {
       if (user && user.token) {
         localStorage.setItem(TOKEN_NAME, JSON.stringify(user));
       }
-      
+      this.authenticatedUser = jwt_decode(localStorage.getItem(TOKEN_NAME));
       return user;
     }));
   }
@@ -40,6 +40,7 @@ export class AuthenticationService {
   logout(){
     localStorage.removeItem(TOKEN_NAME);
     this.router.navigate(['']);
+    this.authenticatedUser = undefined;
   }
 
   isLoggedIn(){
@@ -52,7 +53,7 @@ export class AuthenticationService {
   }
 
   getTokenExpirationDate(token: string): Date {
-    const decoded = jwt_decode(token);
+    const decoded = jwt_decode<any>(token);
 
     if (decoded.exp === undefined) {
       return null;
