@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace eStudent.Models
 {
@@ -9,9 +10,7 @@ namespace eStudent.Models
         public string Name { get; set; }
         [Required]
         public int ECTSPoints { get; set; }
-        [Required]
-        public int YearOfStudy { get; set; }
-        public int CourseId { get; set; }
-        public Course Course { get; set; }
+        public ICollection<SubjectCourse> SubjectCourses { get; set; }
+        public ICollection<UserSubject> UserSubjects { get; set; }
     }
 }

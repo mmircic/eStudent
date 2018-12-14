@@ -24,8 +24,8 @@ namespace eStudent
             CreateMap<RoleCreateDto, Role>();
             CreateMap<RoleUpdateDto, Role>();
 
-            CreateMap<RequestCreateDto, Request>();
-            CreateMap<RequestUpdateDto, Request>();
+            CreateMap<RequestCreateDto, UserCourse>();
+            CreateMap<RequestUpdateDto, UserCourse>();
 
             CreateMap<CourseTypeCreateDto, CourseType>();
             CreateMap<CourseTypeUpdateDto, CourseType>();

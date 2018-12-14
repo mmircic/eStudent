@@ -11,12 +11,12 @@ namespace eStudent.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class RequestController : ControllerBase
+    public class UserCourseController : ControllerBase
     {
         private readonly DatabaseContext _context;
         private readonly IMapper _mapper;
 
-        public RequestController(DatabaseContext context, IMapper mapper)
+        public UserCourseController(DatabaseContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -24,16 +24,16 @@ namespace eStudent.Controllers
 
 
         [HttpGet("all")]
-        public IEnumerable<Request> GetRequests()
+        public IEnumerable<UserCourse> GetRequests()
         {
-            return _context.Requests;
+            return _context.UserCourses;
         }
 
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetRequest(int id)
         {
-            var request = await _context.Requests.FindAsync(id);
+            var request = await _context.UserCourses.FindAsync(id);
 
             if (request == null)
             {
@@ -47,10 +47,10 @@ namespace eStudent.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateRequest(int id, [FromBody] RequestUpdateDto request)
         {
-            Request entity = _mapper.Map<RequestUpdateDto, Request>(request);
+            UserCourse entity = _mapper.Map<RequestUpdateDto, UserCourse>(request);
             entity.Id = id;
 
-            _context.Requests.Update(entity);
+            _context.UserCourses.Update(entity);
 
             await _context.SaveChangesAsync();
 
@@ -62,10 +62,10 @@ namespace eStudent.Controllers
         public async Task<IActionResult> CreateRequest([FromBody] RequestCreateDto request)
         {
 
-            Request entity = _mapper.Map<RequestCreateDto, Request>(request);
+            UserCourse entity = _mapper.Map<RequestCreateDto, UserCourse>(request);
             entity.Accepted = false;
 
-            _context.Requests.Add(entity);
+            _context.UserCourses.Add(entity);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetRequest", new
@@ -78,13 +78,13 @@ namespace eStudent.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRequest(int id)
         {
-            var request = await _context.Requests.FindAsync(id);
+            var request = await _context.UserCourses.FindAsync(id);
             if (request == null)
             {
                 return NotFound();
             }
 
-            _context.Requests.Remove(request);
+            _context.UserCourses.Remove(request);
             await _context.SaveChangesAsync();
 
             return Ok(request);
@@ -92,7 +92,7 @@ namespace eStudent.Controllers
 
         private bool RequestExists(int id)
         {
-            return _context.Requests.Any(e => e.Id == id);
+            return _context.UserCourses.Any(e => e.Id == id);
         }
     }
 }

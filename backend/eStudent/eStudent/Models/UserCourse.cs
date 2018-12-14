@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace eStudent.Models
 {
-    public class Request
+    public class UserCourse
     {
         public int Id { get; set; }
         public int UserId { get; set; }
@@ -12,7 +12,7 @@ namespace eStudent.Models
         public Course Course { get; set; }
         public int YearOfStudy { get; set; }
         [Required]
-        public DateTime Date { get; set; } 
+        public DateTime Date { get; set; }
         [Required]
         public bool Accepted { get; set; }
     }

@@ -23,6 +23,7 @@ import { StudentListComponent } from './components/student-list/student-list.com
 import { UserService } from './services/user.service';
 import { RequestListComponent } from './components/request-list/request-list.component';
 import { StudentEditorComponent } from './components/student-editor/student-editor.component';
+import { CourseListComponent } from './components/course-list/course-list.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { StudentEditorComponent } from './components/student-editor/student-edit
     LoginComponent,
     StudentListComponent,
     RequestListComponent,
-    StudentEditorComponent
+    StudentEditorComponent,
+    CourseListComponent
   ],
   imports: [
     BrowserModule,

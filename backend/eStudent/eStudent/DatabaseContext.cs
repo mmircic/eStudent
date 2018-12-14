@@ -17,7 +17,7 @@ namespace eStudent
         {
             base.OnModelCreating(modelBuilder);
 
-            
+
 
 
             modelBuilder.ApplyConfiguration(new UserConfig());
@@ -26,15 +26,19 @@ namespace eStudent
             modelBuilder.ApplyConfiguration(new CourseConfig());
             modelBuilder.ApplyConfiguration(new CourseTypeConfig());
             modelBuilder.ApplyConfiguration(new UserRoleConfig());
+            modelBuilder.ApplyConfiguration(new UserCourseConfig());
+            modelBuilder.ApplyConfiguration(new UserSubjectConfig());
+            modelBuilder.ApplyConfiguration(new SubjectCourseConfig());
 
         }
 
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<Role> Roles { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<CourseType> CourseTypes { get; set; }
         public DbSet<Subject> Subjects { get; set; }
-        public DbSet<Request> Requests { get; set; }
+        public DbSet<AcademicYear> AcademicYears { get; set; }
+        public DbSet<UserCourse> UserCourses { get; set; }
+        public DbSet<SubjectCourse> SubjectCourses { get; set; }
+        public DbSet<SubjectCourse> UserSubjects { get; set; }
     }
 }

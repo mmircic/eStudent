@@ -19,5 +19,8 @@ namespace eStudent.Models
         [Required]
         public string Residence { get; set; }
         public virtual ICollection<UserRole> Roles { get; } = new List<UserRole>();
+        public ICollection<UserCourse> UserCourses { get; set; }
+        public ICollection<UserSubject> UserSubjects { get; set; }
+
     }
 }

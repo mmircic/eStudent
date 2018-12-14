@@ -2,6 +2,7 @@
 using eStudent.DTO;
 using eStudent.DTO.Role;
 using eStudent.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,13 @@ namespace eStudent.Controllers
     {
         private readonly DatabaseContext _context;
         private readonly IMapper _mapper;
+        private readonly RoleManager<Role> _roleManager;
 
-        public RoleController(DatabaseContext context, IMapper mapper)
+        public RoleController(DatabaseContext context, IMapper mapper, RoleManager<Role> roleManager)
         {
             _context = context;
             _mapper = mapper;
+            _roleManager = roleManager;
         }
 
 
@@ -50,9 +53,7 @@ namespace eStudent.Controllers
             Role entity = _mapper.Map<RoleUpdateDto, Role>(role);
             entity.Id = id;
 
-            _context.Roles.Update(entity);
-
-            await _context.SaveChangesAsync();
+            await _roleManager.UpdateAsync(entity);
 
             return Ok(entity);
         }
@@ -63,11 +64,9 @@ namespace eStudent.Controllers
         {
             Role entity = _mapper.Map<RoleCreateDto, Role>(role);
 
-            _context.Roles.Add(entity);
+            await _roleManager.CreateAsync(entity);
 
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetRole", new { id = entity.Id }, entity);
+            return Ok();
         }
 
 

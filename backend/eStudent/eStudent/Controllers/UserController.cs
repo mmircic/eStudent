@@ -31,7 +31,7 @@ namespace eStudent.Controllers
         [HttpGet("all")]
         public IEnumerable<User> GetUsers()
         {
-            var users = _context.Users;
+            var users = _context.Users.Include(u => u.UserSubjects);
             return users;
         }
 
@@ -94,14 +94,28 @@ namespace eStudent.Controllers
             User entity = _mapper.Map<UserCreateDto, User>(user);
             entity.UserName = user.Email;
 
-            var userFromDb = await _userManager.CreateAsync(entity, entity.PasswordHash);
-            if (!userFromDb.Succeeded)
+            try
             {
-                return BadRequest(userFromDb.Errors);
-            }
-            var roleResult = await _userManager.AddToRoleAsync(entity, "STUDENT");
+                var userFromDb = await _userManager.CreateAsync(entity, entity.PasswordHash);
+                if (!userFromDb.Succeeded)
+                {
+                    return BadRequest(userFromDb.Errors);
+                }
+                var roleResult = await _userManager.AddToRoleAsync(entity, "STUDENT"); 
 
-            return Ok();
+                return Ok();
+            }
+            catch (DbUpdateException ex)
+            {
+                var innerEx = ex.InnerException as PostgresException;
+                if (innerEx != null && innerEx.SqlState == "23505")
+                {
+                    return BadRequest(new[] { new { Code = "DuplicateOIB", Description = string.Empty } });
+                }
+                return BadRequest(ex.Message);
+            }
+
+
 
         }
 
