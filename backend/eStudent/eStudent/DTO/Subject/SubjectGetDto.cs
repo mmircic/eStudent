@@ -5,7 +5,6 @@
         public int Id { get; set; }
         public string Name { get; set; }
         public int ECTSPoints { get; set; }
-        public int YearOfStudy { get; set; }
-        public CourseGetDto Course { get; set; }
+        //public CourseGetDto Course { get; set; }
     }
 }

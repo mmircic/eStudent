@@ -19,19 +19,6 @@ namespace eStudent.Migrations
                 .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("eStudent.Models.AcademicYear", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Year")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AcademicYears");
-                });
-
             modelBuilder.Entity("eStudent.Models.Course", b =>
                 {
                     b.Property<int>("Id")
@@ -118,13 +105,11 @@ namespace eStudent.Migrations
 
                     b.Property<int>("CourseId");
 
-                    b.Property<int>("YearOfStudy");
-
                     b.HasKey("SubjectId", "CourseId");
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("SubjectCourse");
+                    b.ToTable("SubjectCourses");
                 });
 
             modelBuilder.Entity("eStudent.Models.User", b =>
@@ -234,23 +219,6 @@ namespace eStudent.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles");
-                });
-
-            modelBuilder.Entity("eStudent.Models.UserSubject", b =>
-                {
-                    b.Property<int>("UserId");
-
-                    b.Property<int>("SubjectId");
-
-                    b.Property<int>("AcademicYearId");
-
-                    b.HasKey("UserId", "SubjectId");
-
-                    b.HasIndex("AcademicYearId");
-
-                    b.HasIndex("SubjectId");
-
-                    b.ToTable("UserSubject");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -364,24 +332,6 @@ namespace eStudent.Migrations
 
                     b.HasOne("eStudent.Models.User", "User")
                         .WithMany("Roles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("eStudent.Models.UserSubject", b =>
-                {
-                    b.HasOne("eStudent.Models.AcademicYear", "AcademicYear")
-                        .WithMany()
-                        .HasForeignKey("AcademicYearId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("eStudent.Models.Subject", "Subject")
-                        .WithMany("UserSubjects")
-                        .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("eStudent.Models.User", "User")
-                        .WithMany("UserSubjects")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

@@ -27,7 +27,6 @@ namespace eStudent
             modelBuilder.ApplyConfiguration(new CourseTypeConfig());
             modelBuilder.ApplyConfiguration(new UserRoleConfig());
             modelBuilder.ApplyConfiguration(new UserCourseConfig());
-            modelBuilder.ApplyConfiguration(new UserSubjectConfig());
             modelBuilder.ApplyConfiguration(new SubjectCourseConfig());
 
         }
@@ -36,9 +35,7 @@ namespace eStudent
         public DbSet<Course> Courses { get; set; }
         public DbSet<CourseType> CourseTypes { get; set; }
         public DbSet<Subject> Subjects { get; set; }
-        public DbSet<AcademicYear> AcademicYears { get; set; }
         public DbSet<UserCourse> UserCourses { get; set; }
         public DbSet<SubjectCourse> SubjectCourses { get; set; }
-        public DbSet<SubjectCourse> UserSubjects { get; set; }
     }
 }

@@ -11,6 +11,5 @@ namespace eStudent.Models
         [Required]
         public int ECTSPoints { get; set; }
         public ICollection<SubjectCourse> SubjectCourses { get; set; }
-        public ICollection<UserSubject> UserSubjects { get; set; }
     }
 }

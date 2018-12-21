@@ -31,7 +31,7 @@ namespace eStudent.Controllers
         [HttpGet("all")]
         public IEnumerable<User> GetUsers()
         {
-            var users = _context.Users.Include(u => u.UserSubjects);
+            var users = _context.Users;
             return users;
         }
 
@@ -101,7 +101,7 @@ namespace eStudent.Controllers
                 {
                     return BadRequest(userFromDb.Errors);
                 }
-                var roleResult = await _userManager.AddToRoleAsync(entity, "STUDENT"); 
+                var roleResult = await _userManager.AddToRoleAsync(entity, "STUDENT");
 
                 return Ok();
             }

@@ -1,0 +1,34 @@
+<mat-drawer-container [class.drawer-opened]="drawer.opened" class="example-container">
+  <mat-drawer  #drawer class="drawer" mode="side" opened="false">
+
+    <mat-toolbar class="header">
+      <mat-icon class="title-icon">school</mat-icon>
+      <mat-icon class="close" (click)="drawer.close()">close</mat-icon>
+    </mat-toolbar>
+    <div class="contents">
+      <a *ngIf="auth.isAdministrator()" routerLink="/student-list">Studenti</a>
+      <a routerLink="/course-list">Studiji</a>
+      <a *ngIf="auth.isAdministrator()" routerLink="/study-request-list">Zahtjevi za upis</a>
+      <a *ngIf="auth.isAdministrator()" routerLink="/current-students-list">Upisani studenti</a>
+    </div>
+    
+  </mat-drawer>
+
+  <mat-toolbar class="main-header" color="primary">
+    <mat-icon *ngIf="!drawer.opened && auth.isLoggedIn()" (click)="drawer.toggle()">
+      menu
+    </mat-icon>&nbsp;&nbsp;
+    <span class="navbar-title">e-Student</span>&nbsp;&nbsp;
+    <mat-icon class="title-icon">school</mat-icon>
+
+    <span class="example-fill-remaining-space"></span>
+    <span *ngIf="auth.isLoggedIn()" (click)="auth.logout(); drawer.close()">Odjava</span>
+  </mat-toolbar>
+
+  <div class="main contents">
+    <router-outlet></router-outlet>
+  </div>
+s
+
+
+</mat-drawer-container>

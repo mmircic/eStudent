@@ -18,17 +18,17 @@ export class StudentListComponent implements OnInit {
   dataSource:  MatTableDataSource<User>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort) sort: MatSort; 
 
   constructor(private userService: UserService, private auth: AuthenticationService, private router: Router, private dialog: MatDialog) {
-    if (this.auth.authenticatedUser.role != 'Administrator') {
-      this.router.navigate(['/request']);
-    }
+    // if (this.auth.authenticatedUser.role != 'Administrator') {
+    //   this.router.navigate(['/request']);
+    // }
   }
 
   
 
-  ngOnInit() {
+  ngOnInit() { 
 
     this.refreshTable();
   }
@@ -60,8 +60,8 @@ export class StudentListComponent implements OnInit {
        this.refreshTable(); 
       }
       }
-  ); 
-}
+    ); 
+  }
 
 refreshTable(){
   this.userService.getAllStudents().subscribe(u => {

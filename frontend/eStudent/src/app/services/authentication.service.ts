@@ -13,7 +13,7 @@ export const TOKEN_NAME = environment.tokenName;
 })
 export class AuthenticationService {
 
-  API_BASE_URL = environment.baseUri;
+  API_BASE_URL = environment.baseUri; 
   authenticatedUser: User;
 
   constructor(private http: HttpClient, private router: Router) {
@@ -71,5 +71,21 @@ export class AuthenticationService {
     const date = this.getTokenExpirationDate(token);
     if(date === undefined) return false;
     return (date.valueOf() < new Date().valueOf());
+  }
+
+  isAdministrator(){
+    if(!this.isLoggedIn()){
+      return false;
+    }
+
+    const decoded = jwt_decode<any>(localStorage.getItem(TOKEN_NAME));
+    if (decoded.role === 'Administrator') {
+      return true;
+
+    } 
+    else
+    {
+      return false;
+    }  
   }
 }

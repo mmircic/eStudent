@@ -27,12 +27,14 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     if (this.auth.isLoggedIn()) {
       this.router.navigate(['/student-list']);
+    }else{
+      localStorage.removeItem(TOKEN_NAME);
     }
-    localStorage.removeItem(TOKEN_NAME);
+
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.compose([Validators.required, Validators.email])],
       password: ['', Validators.required]
-    });
+    });    
 
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/student-list';
   }

@@ -16,7 +16,7 @@ export class AuthorizationCheck implements CanActivate {
     // otherwise redirect to login page with the return url
     localStorage.removeItem(TOKEN_NAME);
     
-    this.router.navigate([''], { queryParams: { returnUrl: state.url } });
+    this.router.navigate([''], { queryParams: { returnUrl: state.url } }); 
     return false;
   }
 }

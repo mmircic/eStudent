@@ -4,12 +4,6 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user.model';
 import { ValidationService } from 'src/app/services/validation.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { throwError, Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { forEach } from '@angular/router/src/utils/collection';
-import { error } from 'util';
-import { analyzeAndValidateNgModules } from '@angular/compiler';
 
 
 @Component({
@@ -31,7 +25,7 @@ export class StudentEditorComponent implements OnInit {
     this.user = userService.User;
     if(this.user !== undefined) {
       this.createStudent = false;
-    }
+    } 
   }
 
   ngOnInit() {
@@ -55,18 +49,6 @@ export class StudentEditorComponent implements OnInit {
       this.form.removeControl('password');
       this.form.removeControl('repeatedPassword');
       this.form.setValue(extend_json);
-
-
-
-      // this.form.controls['oib'].setValue(this.user.oib);
-      // this.form.controls['firstName'].setValue(this.user.firstName);
-      // this.form.controls['lastName'].setValue(this.user.lastName);
-      // this.form.controls['birthDate'].setValue(this.user.birthDate);
-      // this.form.controls['residence'].setValue(this.user.residence);
-      // this.form.controls['email'].setValue(this.user.email);
-      // this.form.controls['password'].setValue(this.user.password);
-      // 
-
     }
   }
 

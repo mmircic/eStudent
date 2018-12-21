@@ -10,7 +10,8 @@ import { Observable, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-  
+
+
 
   API_BASE_URL = environment.baseUri;
   User: User;
@@ -41,6 +42,12 @@ export class UserService {
       })
     });
   }
+
+  createPdf(id: number): any {
+
+    return this.http.get(this.API_BASE_URL + 'usercourse/pdf/' + id, {responseType: 'blob'});
+  }
+
 }
 
 

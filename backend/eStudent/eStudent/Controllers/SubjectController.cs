@@ -3,6 +3,7 @@ using eStudent.DTO;
 using eStudent.DTO.Subject;
 using eStudent.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -41,6 +42,32 @@ namespace eStudent.Controllers
             }
 
             return Ok(subject);
+        }
+
+        [HttpGet("course/{courseId}")]
+        public IActionResult GetCourseSubjects(int courseId)
+        {
+            //var subjectCourse = await _context.SubjectCourses.FindAsync(id);
+
+            var subjectCourse = _context.Subjects
+                .Include(s => s.SubjectCourses)
+                .ThenInclude(sc => sc.Course)
+                .Where(s => !s.SubjectCourses.Any(p => p.CourseId == courseId))
+                .ToList();
+
+
+            if (!subjectCourse.Any())
+            {
+                return NotFound();
+            }
+
+            //var subjectsLessCode = subjectCourse.Select(sc => sc.Subject);
+            List<Subject> subjects = new List<Subject>();
+            //subjectCourse.ForEach(sc => subjects.Add(sc.Subject));
+
+            List<SubjectGetDto> subjectsDto = _mapper.Map<List<Subject>, List<SubjectGetDto>>(subjectCourse);
+
+            return Ok(subjectsDto);
         }
 
 

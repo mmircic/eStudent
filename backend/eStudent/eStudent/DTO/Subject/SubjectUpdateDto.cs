@@ -8,9 +8,5 @@ namespace eStudent.DTO
         public string Name { get; set; }
         [Required]
         public int? ECTSPoints { get; set; }
-        [Required]
-        public int? YearOfStudy { get; set; }
-        [Required]
-        public int? CourseId { get; set; }
     }
 }

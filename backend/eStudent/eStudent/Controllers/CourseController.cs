@@ -3,6 +3,7 @@ using eStudent.DTO;
 using eStudent.DTO.Course;
 using eStudent.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,10 +25,10 @@ namespace eStudent.Controllers
 
 
         [HttpGet("all")]
-        public IEnumerable<Course> GetCourses()
+        public IEnumerable<CourseGetDto> GetCourses()
         {
-            var courses = _context.Courses.ToList();
-            return courses;
+            IEnumerable<Course> courses = _context.Courses.Include(c => c.CourseType).ToList();
+            return _mapper.Map<IEnumerable<Course>, IEnumerable<CourseGetDto>>(courses);
         }
 
 
@@ -43,6 +44,7 @@ namespace eStudent.Controllers
 
             return Ok(course);
         }
+
 
 
         [HttpPut("{id}")]

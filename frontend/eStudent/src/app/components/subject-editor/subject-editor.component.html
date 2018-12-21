@@ -1,0 +1,25 @@
+<form [formGroup]="form" (ngSubmit)="onSave()">
+    <mat-dialog-content>
+  
+      <span class="close-button" mat-raised-button color="warn" (click)="close()"><mat-icon>close</mat-icon></span><br><br>
+      
+      <div *ngIf="errors">
+        <span *ngFor="let err of errors">{{err.description}}</span>
+      </div>
+  
+  
+      <mat-form-field class="modal-input">
+        <input type="text" matInput placeholder="Naziv predmeta" formControlName="name">
+      </mat-form-field>
+  
+      <mat-form-field class="modal-input">
+        <input type="number" min="1" oninput="validity.valid||(value='');" matInput placeholder="ECTS bodovi" formControlName="ectsPoints">
+      </mat-form-field>
+  
+    </mat-dialog-content>
+  
+    <mat-dialog-actions>
+      
+      <button type="submit" class="mat-raised-button mat-primary">Spremi</button>
+    </mat-dialog-actions>
+</form>
