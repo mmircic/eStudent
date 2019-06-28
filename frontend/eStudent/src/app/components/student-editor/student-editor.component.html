@@ -1,0 +1,50 @@
+<form [formGroup]="form" (ngSubmit)="onSave()">
+  <mat-dialog-content>
+
+    <span class="close-button" mat-raised-button color="warn" (click)="close()"><mat-icon>close</mat-icon></span><br><br>
+    
+    <div *ngIf="errors">
+      <span *ngFor="let err of errors">{{err.description}}</span>
+    </div>
+
+
+    <mat-form-field class="modal-input">
+      <input type="text" matInput placeholder="OIB" formControlName="oib">
+    </mat-form-field>
+
+    <mat-form-field class="modal-input">
+      <input type="text" matInput placeholder="Ime" formControlName="firstName">
+    </mat-form-field>
+
+    <mat-form-field class="modal-input">
+      <input type="text" matInput placeholder="Prezime" formControlName="lastName">
+    </mat-form-field>
+
+    <mat-form-field class="modal-input">
+      <input type="date" matInput placeholder="Datum rođenja" formControlName="birthDate">
+    </mat-form-field>
+    <br>
+    <mat-form-field class="modal-input">
+      <input type="text" matInput placeholder="Prebivalište" formControlName="residence">
+    </mat-form-field>
+
+    <mat-form-field class="modal-input">
+      <input type="email" matInput placeholder="Email" formControlName="email">
+    </mat-form-field>
+
+    <mat-form-field *ngIf="createStudent" class="modal-input">
+      <input type="password" matInput placeholder="Lozinka" formControlName="password">
+    </mat-form-field>
+
+    <mat-form-field *ngIf="createStudent" class="modal-input">
+      <input type="password" matInput placeholder="Ponovljena lozinka" formControlName="repeatedPassword">
+    </mat-form-field>
+
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    
+    <button type="submit" class="mat-raised-button mat-primary">Spremi</button>
+  </mat-dialog-actions>
+</form>

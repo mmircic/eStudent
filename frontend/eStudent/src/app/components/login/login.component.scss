@@ -1,0 +1,28 @@
+.login-form-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+   // margin: auto; 
+    padding: 0 35%;
+    padding-top: 65px;
+    //background-color: blue;
+}
+
+.login-form-container > *{
+    width: 30%;
+}
+
+.login-form-container > button{
+    width: 10%;
+    margin: 2% 10% 0 10%;
+}
+
+.login-form-title{
+    font-size: 30px;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+
+

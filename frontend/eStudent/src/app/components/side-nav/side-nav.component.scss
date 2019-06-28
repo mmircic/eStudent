@@ -1,0 +1,64 @@
+.drawer {
+    position: fixed;
+    height: 100vh;
+    min-width: 20%;
+    border-right: 1px solid #ccc;
+  }
+  .drawer .header {
+    position: absolute;
+    right: 0;
+    justify-content: space-between;
+  }
+  .drawer .contents {
+    padding: 16px;
+  }
+  
+  .main {
+    background-color: #fff;
+  }
+  
+  .main.header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 2;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .main.contents {
+    min-height: 100vh;
+    margin-top: 64px; /* height of header */
+    padding: 16px;
+  }
+
+  .contents{
+    margin-top: 100px;
+  }
+
+  .contents a{
+    display: block;
+    color: black;
+    text-decoration: none;
+    margin: 20px 0;
+    font-weight: bold;
+    font-size: 1.3em;
+  }
+
+  .title-icon{
+    font-size: 30px;
+}
+
+.navbar-title{
+    font-size: 30px;
+}
+
+.example-fill-remaining-space {
+    /* This fills the remaining space, by using flexbox. 
+       Every toolbar row uses a flexbox row layout. */
+    flex: 1 1 auto;
+  }
+  
+  
+  
+  
+  

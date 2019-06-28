@@ -1,0 +1,24 @@
+<form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+  <div class="login-form-container">
+    <span class="login-form-title">Prijava</span>
+    <div *ngIf="invalidLogin">Invalid username or password.</div>
+    <mat-form-field>
+      <input type="email" formControlName="email" [ngClass]="{'is-invalid': submitted && formData.email.errors}"
+        matInput placeholder="Email">
+    </mat-form-field>
+    <div *ngIf="submitted && formData.email.errors" class="invalid-feedback">
+      <div *ngIf="formData.email.errors.required">Unos Email adrese je obavezan</div>
+      <div *ngIf="formData.email.errors.email">Netočan format E-mail adrese</div>
+    </div>
+
+    <mat-form-field>
+      <input type="password" formControlName="password" [ngClass]="{'is-invalid': submitted && formData.password.errors}"
+        matInput placeholder="Lozinka" [type]="hide ? 'password' : 'text'">
+      <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </mat-form-field>
+    <div *ngIf="submitted && formData.password.errors" class="invalid-feedback">
+      <div *ngIf="formData.password.errors.required">Unos lozinke je obavezan</div>
+    </div>
+    <button type="submit" mat-raised-button color="primary">Prijava</button>
+  </div>
+</form>
