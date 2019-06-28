@@ -6,10 +6,10 @@
       <mat-icon class="close" (click)="drawer.close()">close</mat-icon>
     </mat-toolbar>
     <div class="contents">
-      <a *ngIf="auth.isAdministrator()" routerLink="/student-list">Studenti</a>
-      <a routerLink="/course-list">Studiji</a>
-      <a *ngIf="auth.isAdministrator()" routerLink="/study-request-list">Zahtjevi za upis</a>
-      <a *ngIf="auth.isAdministrator()" routerLink="/current-students-list">Upisani studenti</a>
+      <a *ngIf="auth.isAdministrator()" routerLink="/student-list" (click)="drawer.close()">Studenti</a>
+      <a routerLink="/course-list" (click)="drawer.close()">Studiji</a>
+      <a *ngIf="auth.isAdministrator()" routerLink="/study-request-list" (click)="drawer.close()">Zahtjevi za upis</a>
+      <a *ngIf="auth.isAdministrator()" routerLink="/current-students-list" (click)="drawer.close()">Upisani studenti</a>
     </div>
     
   </mat-drawer>
@@ -28,7 +28,7 @@
   <div class="main contents">
     <router-outlet></router-outlet>
   </div>
-s
+
 
 
 </mat-drawer-container>
